@@ -1,5 +1,5 @@
 # English
-**This plugin is an example for a [lesson]()**.
+**This plugin is an example for a [lesson](https://vk.com/@php_pmapi-scoreboard-pakety)**. Please, use [translate.google.com](https://translate.google.com)
 
 The plugin is ready for use in production.
 
@@ -26,7 +26,7 @@ setLines(string[] $lines, bool $forceUpdate = true) | Scoreboard | Updates multi
 update() | Scoreboard | Sends changes to the player
 
 # Русский
-**Этот плагин - пример для [урока]()**.
+**Этот плагин - пример для [урока](https://vk.com/@php_pmapi-scoreboard-pakety)**.
 
 Плагин готов к использования на продакшене.
 
