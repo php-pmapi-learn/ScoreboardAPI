@@ -78,7 +78,7 @@ final class ScoreboardManager
      * @return bool
      */
     public function delete(Player $player): bool {
-        if($this->isExists($player)) {
+        if(!$this->isExists($player)) {
             return false;
         }
 
