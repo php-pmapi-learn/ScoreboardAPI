@@ -3,12 +3,13 @@
 namespace AlexBrin\Scoreboard\Models;
 
 use InvalidArgumentException;
-use pocketmine\network\mcpe\protocol\BatchPacket;
+use pocketmine\network\mcpe\PacketBatch;
 use pocketmine\network\mcpe\protocol\RemoveObjectivePacket;
 use pocketmine\network\mcpe\protocol\SetDisplayObjectivePacket;
 use pocketmine\network\mcpe\protocol\SetScorePacket;
 use pocketmine\network\mcpe\protocol\types\ScorePacketEntry;
-use pocketmine\Player;
+use pocketmine\player\Player;
+use pocketmine\Server;
 
 /**
  * Class Scoreboard
@@ -81,7 +82,7 @@ final class Scoreboard
         $pk->criteriaName = "dummy";
         $pk->sortOrder = 0;
 
-        $this->player->sendDataPacket($pk);
+        $this->player->getNetworkSession()->sendDataPacket($pk);
         $this->isVisible = true;
 
         return $this;
@@ -99,7 +100,7 @@ final class Scoreboard
         $pk = new RemoveObjectivePacket;
         $pk->objectiveName = self::objectiveName;
 
-        $this->player->sendDataPacket($pk);
+        $this->player->getNetworkSession()->sendDataPacket($pk);
         $this->isVisible = true;
 
         return $this;
@@ -147,7 +148,7 @@ final class Scoreboard
         }
 
         unset($this->lines[$line]);
-        $this->player->dataPacket(self::prepareRemoveLinesPacket([$line]));
+        $this->player->getNetworkSession()->sendDataPacket(self::prepareRemoveLinesPacket([$line]));
         return $this;
     }
 
@@ -212,8 +213,8 @@ final class Scoreboard
             throw new InvalidArgumentException("You cannot change the contents of a hidden scoreboard");
         }
 
-        $batch = new BatchPacket;
-        $batch->addPacket(self::prepareRemoveLinesPacket($this->dirt));
+        $batch = new PacketBatch();
+        $batch->putPacket(self::prepareRemoveLinesPacket($this->dirt));
 
         /** @var ScorePacketEntry $entries */
         $entries = [];
@@ -231,11 +232,9 @@ final class Scoreboard
         $pk = new SetScorePacket;
         $pk->type = SetScorePacket::TYPE_CHANGE;
         $pk->entries = $entries;
+        $batch->putPacket($pk);
 
-        $batch->addPacket($pk);
-
-        $this->player->sendDataPacket($batch);
-
+		$this->player->getNetworkSession()->queueCompressed(Server::getInstance()->prepareBatch($batch), true);
         return $this;
     }
 }

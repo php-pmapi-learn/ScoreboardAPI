@@ -4,7 +4,7 @@ namespace AlexBrin\Scoreboard;
 
 use AlexBrin\Scoreboard\Models\Scoreboard;
 use AlexBrin\Scoreboard\Models\ScoreboardManager;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class API
