@@ -2,7 +2,7 @@
 
 namespace AlexBrin\Scoreboard\Models;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class ScoreboardManager
