@@ -100,7 +100,7 @@ final class Scoreboard
         $pk->objectiveName = self::objectiveName;
 
         $this->player->sendDataPacket($pk);
-        $this->isVisible = true;
+        $this->isVisible = false;
 
         return $this;
     }
